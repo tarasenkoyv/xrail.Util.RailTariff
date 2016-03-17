@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace xrail.Util.RailTariff
 {
-    public static class Rater
+    public static class RailTariffRater
     {
         private static ILog _logger;
 
@@ -46,9 +46,9 @@ namespace xrail.Util.RailTariff
             @"CurrencyID"
         };
 
-        static Rater()
+        static RailTariffRater()
         {
-            _logger = LogManager.GetLogger(typeof(Rater));
+            _logger = LogManager.GetLogger(typeof(RailTariffRater));
 
         }
         public static Dictionary<Tuple<int, int>, int> GetDistance(List<Tuple<int, int>> stationPairs)
@@ -94,5 +94,7 @@ namespace xrail.Util.RailTariff
 
             return result;
         }
+
+
     }
 }

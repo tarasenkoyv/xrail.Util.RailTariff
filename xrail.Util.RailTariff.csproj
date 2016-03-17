@@ -30,16 +30,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Interop.RailTariff">
       <HintPath>..\ExternalLib\Interop.RailTariff.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.4\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,10 +59,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSchema.cs" />
+    <Compile Include="EtranRater.cs" />
+    <Compile Include="Helper\EtranHelper.cs" />
+    <Compile Include="IRater.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rater.cs" />
+    <Compile Include="RailTariffRater.cs" />
+    <Compile Include="CalcDuePostDataBuilder.cs" />
+    <Compile Include="RzdWebRater.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ETRAN.Model\xrail.ETRAN.Model.csproj">
+      <Project>{e12ef3cb-0061-4d7b-963f-29ef07b90256}</Project>
+      <Name>xrail.ETRAN.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gateway.Client\xrail.Gateway.Client.csproj">
+      <Project>{ca7187f0-660d-45ff-874e-4a021c3cb396}</Project>
+      <Name>xrail.Gateway.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gateway.Interface\xrail.Gateway.Interface.csproj">
+      <Project>{3051f4b2-f879-4974-a513-1669a8797a91}</Project>
+      <Name>xrail.Gateway.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Info.Model\xrail.Info.Model.csproj">
+      <Project>{628b88e8-7a68-40e6-996e-2b44bf63eeca}</Project>
+      <Name>xrail.Info.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging.Model\xrail.Logging.Model.csproj">
+      <Project>{9697ac81-d90f-40b8-8b24-38e049b2cfe7}</Project>
+      <Name>xrail.Logging.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model.Interface\xrail.Model.Interface.csproj">
+      <Project>{13d2f08f-bbb4-4d45-b5f9-e28f17369d30}</Project>
+      <Name>xrail.Model.Interface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
