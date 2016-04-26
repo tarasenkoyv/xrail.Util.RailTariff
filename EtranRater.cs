@@ -81,12 +81,13 @@ namespace xrail.Util.RailTariff
                 var getCalcDue = new GetCalcDue();
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
                 getCalcDue.SpeedID = invoice.SpeedID.Value;
-                getCalcDue.FromStationCode = invoice.CodeFromStation.Value;
-                getCalcDue.ToStationCode = invoice.CodeToStation.Value;
+                getCalcDue.FromStationCode = invoice.CodeStationFirstRZD;
+                getCalcDue.ToStationCode = invoice.CodeStationLastRZD;
+                getCalcDue.ToCountryCode = invoice.ToCountryCode.Value;
                 getCalcDue.DateLoad = invoice.DateReady;
-
+                
                 var invoiceFreight = invoice.Freights.First();
-                getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight });
+                getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight, GNGCode = invoiceFreight.GNGCode });
 
                 var cars = new List<InvCarReply>();
                 foreach (var invCar in invoice.Cars)
@@ -97,6 +98,8 @@ namespace xrail.Util.RailTariff
                         TypeID = (short)carInfo.TypeID,
                         Number = invCar.Number,
                         WeightNet = invCar.WeightNet,
+                        WeightAddDev = invCar.WeightAddDev,
+                        AddDevWithGoods = invCar.AddDevWithGoods,
                         Tonnage = invCar.Tonnage,
                         Axles = (byte)carInfo.Axles,
                         OwnerTypeID = 1
@@ -141,12 +144,14 @@ namespace xrail.Util.RailTariff
                 var getCalcDue = new GetCalcDue();
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
                 getCalcDue.SpeedID = invoice.SpeedID.Value;
-                getCalcDue.FromStationCode = invoice.CodeFromStation.Value;
-                getCalcDue.ToStationCode = invoice.CodeToStation.Value;
+                getCalcDue.FromStationCode = invoice.CodeStationFirstRZD;
+                getCalcDue.ToStationCode = invoice.CodeStationLastRZD;
+                getCalcDue.ToCountryCode = invoice.ToCountryCode.Value;
+
                 getCalcDue.DateLoad = invoice.DateReady;
 
                 var invoiceFreight = invoice.Freights.First();
-                getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight });
+                getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight, GNGCode = invoiceFreight.GNGCode });
 
                 var cars = new List<InvCarReply>();
                 foreach (var invCar in invoice.Cars)
@@ -157,6 +162,8 @@ namespace xrail.Util.RailTariff
                         TypeID = (short)carInfo.TypeID,
                         Number = invCar.Number,
                         WeightNet = invCar.WeightNet,
+                        WeightAddDev = invCar.WeightAddDev,
+                        AddDevWithGoods = invCar.AddDevWithGoods,
                         Tonnage = invCar.Tonnage,
                         Axles = (byte)carInfo.Axles,
                         OwnerTypeID = 3
