@@ -19,7 +19,7 @@ namespace xrail.Util.RailTariff
     {
         private static readonly ILog _logger = LogManager.GetLogger(typeof(RzdWebRater));
 
-        public GetCalcDueReply GetCalcDue(DateTime dateReady, long sendKindID, long speedID, int fromStationCode, int toStationCode, List<InvCarReply> cars, InvoiceFreight freight, List<Distance> distances)
+        public GetCalcDueReply GetCalcDue(DateTime dateReady, long sendKindID, long speedID, int fromStationCode, short fromCountryCode, int toStationCode, short toCountryCode, List<InvCarReply> cars, InvoiceFreight freight, List<Distance> distances)
         {
             try
             {
@@ -37,15 +37,17 @@ namespace xrail.Util.RailTariff
                         getCalcDue.SendKindID = sendKindID;
                         getCalcDue.SpeedID = speedID;
                         getCalcDue.FromStationCode = fromStationCode;
+                        getCalcDue.FromCountryCode = fromCountryCode;
                         getCalcDue.ToStationCode = toStationCode;
+                        getCalcDue.ToCountryCode = toCountryCode;
                         getCalcDue.DateLoad = dateReady;
 
-                        getCalcDue.Freights.Add(new InvoiceFreight() { Code = freight.Code, Weight = freight.Weight });
+                        getCalcDue.Freights.Add(new InvoiceFreight() { Code = freight.Code, Weight = freight.Weight, GNGCode = freight.GNGCode });
                         getCalcDue.Cars.AddRange(cars);
 
                         var getCalcDistance = new GetCalcDistance();
-                        getCalcDistance.Distances.Add(new InvDistanceReply() { CodeStation = fromStationCode });
-                        getCalcDistance.Distances.Add(new InvDistanceReply() { CodeStation = toStationCode });
+                        getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = fromStationCode });
+                        getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = toStationCode });
 
                         getCalcDue.Distances.AddRange(getCalcDistance.Distances);
 
@@ -109,8 +111,8 @@ namespace xrail.Util.RailTariff
                 getCalcDue.Cars.AddRange(cars);
 
                 var getCalcDistance = new GetCalcDistance();
-                getCalcDistance.Distances.Add(new InvDistanceReply() { CodeStation = invoice.CodeFromStation.Value });
-                getCalcDistance.Distances.Add(new InvDistanceReply() { CodeStation = invoice.CodeToStation.Value });
+                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeFromStation.Value });
+                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeToStation.Value });
 
                 getCalcDue.Distances.AddRange(getCalcDistance.Distances);
 
@@ -173,8 +175,8 @@ namespace xrail.Util.RailTariff
                 getCalcDue.Cars.AddRange(cars);
 
                 var getCalcDistance = new GetCalcDistance();
-                getCalcDistance.Distances.Add(new InvDistanceReply() { CodeStation = invoice.CodeFromStation.Value });
-                getCalcDistance.Distances.Add(new InvDistanceReply() { CodeStation = invoice.CodeToStation.Value });
+                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeFromStation.Value });
+                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeToStation.Value });
 
                 getCalcDue.Distances.AddRange(getCalcDistance.Distances);
 
@@ -191,6 +193,39 @@ namespace xrail.Util.RailTariff
             catch (Exception ex)
             {
                 _logger.ErrorFormat("При расчете тарифа произошла ошибка: {0}.", ex.Message);
+            }
+            return null;
+        }
+
+        public GetCalcDistanceReply GetCalcDistance(GetCalcDistance getCalcDistance)
+        {
+            try
+            {
+                using (var client = new GatewayDirectClient())
+                {
+                    using (var etranDbContext = new EtranDbContext())
+                    {
+                        var user = etranDbContext.Users.Find(1);
+                        var request = new GatewayRequest { Login = user.Login, Password = user.Password };
+
+                        GatewayResponce responce;
+                        string resultMessage = string.Empty;
+
+                        request.Text = getCalcDistance.GetXml();
+
+                        bool? @return = EtranHelper.ExecuteRequest(out responce, out resultMessage, request, client, etranDbContext);
+
+                        if (@return != null && @return.Value)
+                        {
+                            return ReplyBase.Create<GetCalcDistanceReply>(responce.Content as string);
+                        }
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorFormat("При расчете тарифного расстояния произошла ошибка: {0}.", ex.Message);
             }
             return null;
         }
