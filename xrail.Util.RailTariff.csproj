@@ -90,7 +90,7 @@
       <Project>{13d2f08f-bbb4-4d45-b5f9-e28f17369d30}</Project>
       <Name>xrail.Model.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\xrail.Rater.Interface\xrail.Rater.Interface.csproj">
+    <ProjectReference Include="..\Rater.Interface\xrail.Rater.Interface.csproj">
       <Project>{20e00833-b721-42aa-9989-ce34fb2939d1}</Project>
       <Name>xrail.Rater.Interface</Name>
     </ProjectReference>
