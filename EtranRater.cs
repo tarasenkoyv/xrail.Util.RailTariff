@@ -81,6 +81,7 @@ namespace xrail.Util.RailTariff
                 string resultMessage = string.Empty;
 
                 var getCalcDue = new GetCalcDue();
+                getCalcDue.CodeTariff = invoice.CodeTariff;
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
                 getCalcDue.SpeedID = invoice.SpeedID.Value;
                 //getCalcDue.FromCountryCode = invoice.FromCountryCode.Value;
@@ -146,6 +147,7 @@ namespace xrail.Util.RailTariff
                 string resultMessage = string.Empty;
 
                 var getCalcDue = new GetCalcDue();
+                getCalcDue.CodeTariff = invoice.CodeTariff;
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
                 getCalcDue.SpeedID = invoice.SpeedID.Value;
                 //getCalcDue.FromCountryCode = invoice.FromCountryCode.Value;
