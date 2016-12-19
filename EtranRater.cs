@@ -90,7 +90,12 @@ namespace xrail.Util.RailTariff
                 getCalcDue.ToCountryCode = invoice.ToCountryCode.Value;
 
                 getCalcDue.DateLoad = invoice.DateReady;
-                
+
+                getCalcDue.SenderID = invoice.SenderID;
+                getCalcDue.PayerCode = invoice.PayerCode;
+                getCalcDue.PayFormID = invoice.PayFormID.Value;
+                getCalcDue.PayPlaceID = invoice.PayPlaceID.Value;
+
                 var invoiceFreight = invoice.Freights.First();
                 getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight, GNGCode = invoiceFreight.GNGCode });
 
@@ -156,6 +161,11 @@ namespace xrail.Util.RailTariff
                 getCalcDue.ToCountryCode = invoice.ToCountryCode.Value;
 
                 getCalcDue.DateLoad = invoice.DateReady;
+
+                getCalcDue.SenderID = invoice.SenderID;
+                getCalcDue.PayerCode = invoice.PayerCode;
+                getCalcDue.PayFormID = invoice.PayFormID.Value;
+                getCalcDue.PayPlaceID = invoice.PayPlaceID.Value;
 
                 var invoiceFreight = invoice.Freights.First();
                 getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight, GNGCode = invoiceFreight.GNGCode });
