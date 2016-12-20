@@ -119,8 +119,11 @@ namespace xrail.Util.RailTariff
                 getCalcDue.Cars.AddRange(cars);
 
                 var getCalcDistance = new GetCalcDistance();
-                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeFromStation.Value });
-                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeToStation.Value });
+                foreach(var dist in invoice.Distances)
+                {
+                    var distReply = new InvDistanceReply("distance") { CodeStation = dist.CodeStation / 10, CarrierID = dist.CarrierID ?? 1 /* ОАО "РЖД" */ };
+                    getCalcDistance.Distances.Add(distReply);
+                }
 
                 getCalcDue.Distances.AddRange(getCalcDistance.Distances);
 
@@ -190,9 +193,11 @@ namespace xrail.Util.RailTariff
                 getCalcDue.Cars.AddRange(cars);
 
                 var getCalcDistance = new GetCalcDistance();
-                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeFromStation.Value });
-                getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = invoice.CodeToStation.Value });
-
+                foreach (var dist in invoice.Distances)
+                {
+                    var distReply = new InvDistanceReply("distance") { CodeStation = dist.CodeStation / 10, CarrierID = dist.CarrierID ?? 1 /* ОАО "РЖД" */ };
+                    getCalcDistance.Distances.Add(distReply);
+                }
                 getCalcDue.Distances.AddRange(getCalcDistance.Distances);
 
                 request.Text = getCalcDue.GetXml();
