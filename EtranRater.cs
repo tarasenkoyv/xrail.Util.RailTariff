@@ -93,6 +93,24 @@ namespace xrail.Util.RailTariff
                 getCalcDue.PayFormID = invoice.PayFormID.Value;
                 getCalcDue.PayPlaceID = invoice.PayPlaceID.Value;
 
+                #region Сведения об отправительском маршруте
+
+                if(!string.IsNullOrEmpty(invoice.RouteTypeName))
+                {
+                    if(getCalcDue.SendKindID ==  1)
+                    {
+                        getCalcDue.PlanCarCount = 2;
+                    }
+
+                    getCalcDue.SendKindID = 5;
+                }
+                getCalcDue.SignRouteNumCirc = invoice.SignRouteNumCirc;
+                getCalcDue.RouteName = invoice.RouteName;
+                getCalcDue.RouteNumCirc = invoice.RouteNumCirc;
+                getCalcDue.RouteTypeName = invoice.RouteTypeName;
+
+                #endregion // Сведения об отправительском маршруте
+
                 var invoiceFreight = invoice.Freights.First();
                 getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight, GNGCode = invoiceFreight.GNGCode });
 
@@ -114,6 +132,23 @@ namespace xrail.Util.RailTariff
                     cars.Add(car);
                 }
                 getCalcDue.Cars.AddRange(cars);
+
+                if (!string.IsNullOrEmpty(invoice.RouteTypeName) && getCalcDue.Cars.Count == 1)
+                {
+                    var firstCar = getCalcDue.Cars.First();
+                    var testCar = new InvCarReply()
+                    {
+                        TypeID = (short)firstCar.TypeID,
+                        Number = 11111110,
+                        WeightNet = firstCar.WeightNet,
+                        WeightAddDev = firstCar.WeightAddDev,
+                        AddDevWithGoods = firstCar.AddDevWithGoods,
+                        Tonnage = firstCar.Tonnage,
+                        Axles = (byte)firstCar.Axles,
+                        OwnerTypeID = 1
+                    };
+                    getCalcDue.Cars.Add(testCar);
+                }
 
                 var getCalcDistance = new GetCalcDistance();
                 foreach(var dist in invoice.Distances)
@@ -167,6 +202,25 @@ namespace xrail.Util.RailTariff
                 getCalcDue.PayFormID = invoice.PayFormID.Value;
                 getCalcDue.PayPlaceID = invoice.PayPlaceID.Value;
 
+                #region Сведения об отправительском маршруте
+
+                if (!string.IsNullOrEmpty(invoice.RouteTypeName))
+                {
+                    if (getCalcDue.SendKindID == 1)
+                    {
+                        getCalcDue.PlanCarCount = 2;
+                    }
+
+                    getCalcDue.SendKindID = 5;
+                }
+
+                getCalcDue.SignRouteNumCirc = invoice.SignRouteNumCirc;
+                getCalcDue.RouteName = invoice.RouteName;
+                getCalcDue.RouteNumCirc = invoice.RouteNumCirc;
+                getCalcDue.RouteTypeName = invoice.RouteTypeName;
+
+                #endregion // Сведения об отправительском маршруте
+
                 var invoiceFreight = invoice.Freights.First();
                 getCalcDue.Freights.Add(new InvoiceFreight() { Code = invoiceFreight.Code, Weight = invoiceFreight.Weight, GNGCode = invoiceFreight.GNGCode });
 
@@ -188,6 +242,23 @@ namespace xrail.Util.RailTariff
                     cars.Add(car);
                 }
                 getCalcDue.Cars.AddRange(cars);
+
+                if (!string.IsNullOrEmpty(invoice.RouteTypeName) && getCalcDue.Cars.Count == 1)
+                {
+                    var firstCar = getCalcDue.Cars.First();
+                    var testCar = new InvCarReply()
+                    {
+                        TypeID = (short)firstCar.TypeID,
+                        Number = 11111110,
+                        WeightNet = firstCar.WeightNet,
+                        WeightAddDev = firstCar.WeightAddDev,
+                        AddDevWithGoods = firstCar.AddDevWithGoods,
+                        Tonnage = firstCar.Tonnage,
+                        Axles = (byte)firstCar.Axles,
+                        OwnerTypeID = 3
+                    };
+                    getCalcDue.Cars.Add(testCar);
+                }
 
                 var getCalcDistance = new GetCalcDistance();
                 foreach (var dist in invoice.Distances)
