@@ -8,10 +8,10 @@ using xrail.ETRAN.Model;
 using xrail.ETRAN.Model.Replies;
 using xrail.ETRAN.Replies;
 using xrail.ETRAN.Requests;
-using xrail.Gateway;
+using xrail.Gateway.Interface;
+using xrail.Gateway.Client;
 using xrail.Info.Model;
 using xrail.Model.Interface;
-using xrail.Util.RailTariff.Helper;
 
 namespace xrail.Util.RailTariff
 {
@@ -23,44 +23,41 @@ namespace xrail.Util.RailTariff
         {
             try
             {
-                using (var client = new GatewayDirectClient())
+                using (var etranDbContext = new EtranDbContext())
                 {
-                    using (var etranDbContext = new EtranDbContext())
+                    var user = etranDbContext.Users.Find(1);
+                    var request = new GatewayRequest { Login = user.Login, Password = user.Password };
+
+                    GatewayResponce responce;
+                    string resultMessage = string.Empty;
+
+                    var getCalcDue = new GetCalcDue();
+                    getCalcDue.SendKindID = sendKindID;
+                    getCalcDue.SpeedID = speedID;
+                    getCalcDue.FromStationCode = fromStationCode;
+                    getCalcDue.FromCountryCode = fromCountryCode;
+                    getCalcDue.ToStationCode = toStationCode;
+                    getCalcDue.ToCountryCode = toCountryCode;
+                    getCalcDue.DateLoad = dateReady;
+
+                    getCalcDue.Freights.Add(new InvoiceFreight() { Code = freight.Code, Weight = freight.Weight, GNGCode = freight.GNGCode });
+                    getCalcDue.Cars.AddRange(cars);
+
+                    var getCalcDistance = new GetCalcDistance();
+                    getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = fromStationCode });
+                    getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = toStationCode });
+
+                    getCalcDue.Distances.AddRange(getCalcDistance.Distances);
+
+                    request.Text = getCalcDue.GetXml();
+
+                    var @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
+
+                    if (@return)
                     {
-                        var user = etranDbContext.Users.Find(1);
-                        var request = new GatewayRequest { Login = user.Login, Password = user.Password };
-
-                        GatewayResponce responce;
-                        string resultMessage = string.Empty;
-
-                        var getCalcDue = new GetCalcDue();
-                        getCalcDue.SendKindID = sendKindID;
-                        getCalcDue.SpeedID = speedID;
-                        getCalcDue.FromStationCode = fromStationCode;
-                        getCalcDue.FromCountryCode = fromCountryCode;
-                        getCalcDue.ToStationCode = toStationCode;
-                        getCalcDue.ToCountryCode = toCountryCode;
-                        getCalcDue.DateLoad = dateReady;
-
-                        getCalcDue.Freights.Add(new InvoiceFreight() { Code = freight.Code, Weight = freight.Weight, GNGCode = freight.GNGCode });
-                        getCalcDue.Cars.AddRange(cars);
-
-                        var getCalcDistance = new GetCalcDistance();
-                        getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = fromStationCode });
-                        getCalcDistance.Distances.Add(new InvDistanceReply("distance") { CodeStation = toStationCode });
-
-                        getCalcDue.Distances.AddRange(getCalcDistance.Distances);
-
-                        request.Text = getCalcDue.GetXml();
-
-                        bool? @return = EtranHelper.ExecuteRequest(out responce, out resultMessage, request, client, etranDbContext);
-
-                        if(@return != null && @return.Value)
-                        {
-                            return ReplyBase.Create<GetCalcDueReply>(responce.Content as string);
-                        }
-                        return null;
+                        return ReplyBase.Create<GetCalcDueReply>(responce.Content as string);
                     }
+                    return null;
                 }
             }
             catch (Exception ex)
@@ -70,7 +67,7 @@ namespace xrail.Util.RailTariff
             return null;
         }
 
-        public GetCalcDueReply GetCalcDueCustom(Invoice invoice, EtranDbContext etranDbContext, InfoContext infoDbContext, GatewayDirectClient client)
+        public GetCalcDueReply GetCalcDueCustom(Invoice invoice, EtranDbContext etranDbContext, InfoContext infoDbContext)
         {
             try
             {
@@ -129,9 +126,9 @@ namespace xrail.Util.RailTariff
 
                 request.Text = getCalcDue.GetXml();
 
-                bool? @return = EtranHelper.ExecuteRequest(out responce, out resultMessage, request, client, etranDbContext);
+                var @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
 
-                if (@return != null && @return.Value)
+                if (@return)
                 {
                     return ReplyBase.Create<GetCalcDueReply>(responce.Content as string);
                 }
@@ -144,7 +141,7 @@ namespace xrail.Util.RailTariff
             return null;
         }
 
-        public GetCalcDueReply GetCalcDueRZD(Invoice invoice, EtranDbContext etranDbContext, InfoContext infoDbContext, GatewayDirectClient client)
+        public GetCalcDueReply GetCalcDueRZD(Invoice invoice, EtranDbContext etranDbContext, InfoContext infoDbContext)
         {
             try
             {
@@ -202,7 +199,7 @@ namespace xrail.Util.RailTariff
 
                 request.Text = getCalcDue.GetXml();
 
-                bool? @return = EtranHelper.ExecuteRequest(out responce, out resultMessage, request, client, etranDbContext);
+                bool? @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
 
                 if (@return != null && @return.Value)
                 {
@@ -221,24 +218,21 @@ namespace xrail.Util.RailTariff
         {
             try
             {
-                using (var client = new GatewayDirectClient())
+                using (var etranDbContext = new EtranDbContext())
                 {
-                    using (var etranDbContext = new EtranDbContext())
+                    var user = etranDbContext.Users.Find(1);
+                    var request = new GatewayRequest { Login = user.Login, Password = user.Password };
+
+                    GatewayResponce responce;
+                    string resultMessage = string.Empty;
+
+                    request.Text = getCalcDistance.GetXml();
+
+                    var @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
+
+                    if (@return)
                     {
-                        var user = etranDbContext.Users.Find(1);
-                        var request = new GatewayRequest { Login = user.Login, Password = user.Password };
-
-                        GatewayResponce responce;
-                        string resultMessage = string.Empty;
-
-                        request.Text = getCalcDistance.GetXml();
-
-                        bool? @return = EtranHelper.ExecuteRequest(out responce, out resultMessage, request, client, etranDbContext);
-
-                        if (@return != null && @return.Value)
-                        {
-                            return ReplyBase.Create<GetCalcDistanceReply>(responce.Content as string);
-                        }
+                        return ReplyBase.Create<GetCalcDistanceReply>(responce.Content as string);
                     }
                 }
                 return null;
