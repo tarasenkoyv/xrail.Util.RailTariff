@@ -82,16 +82,16 @@ namespace xrail.Util.RailTariff
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
                 getCalcDue.SpeedID = invoice.SpeedID.Value;
                 //getCalcDue.FromCountryCode = invoice.FromCountryCode.Value;
-                getCalcDue.FromStationCode = invoice.CodeStationFirstRZD;
-                getCalcDue.ToStationCode = invoice.CodeStationLastRZD;
+                getCalcDue.FromStationCode = invoice.CodeStationFirstRZD > 0 ? invoice.CodeStationFirstRZD : invoice.CodeFromStation.Value;
+                getCalcDue.ToStationCode = invoice.CodeStationLastRZD > 0 ? invoice.CodeStationLastRZD : invoice.CodeToStation.Value;
                 getCalcDue.ToCountryCode = invoice.ToCountryCode.Value;
 
                 getCalcDue.DateLoad = invoice.DateReady;
 
                 getCalcDue.SenderID = invoice.SenderID;
                 getCalcDue.PayerCode = invoice.PayerCode;
-                getCalcDue.PayFormID = invoice.PayFormID.Value;
-                getCalcDue.PayPlaceID = invoice.PayPlaceID.Value;
+                getCalcDue.PayFormID = invoice.PayFormID ?? 0;
+                getCalcDue.PayPlaceID = invoice.PayPlaceID ?? 0;
 
                 #region Сведения об отправительском маршруте
 
