@@ -25,7 +25,7 @@ namespace xrail.Util.RailTariff
             {
                 using (var etranDbContext = new EtranDbContext())
                 {
-                    var user = etranDbContext.Users.Find(1);
+                    var user = EtranGatewayHelper.BaseUser;
                     var request = new GatewayRequest { Login = user.Login, Password = user.Password };
 
                     GatewayResponce responce;
@@ -71,7 +71,7 @@ namespace xrail.Util.RailTariff
         {
             try
             {
-                var user = etranDbContext.Users.Find(1);
+                var user = EtranGatewayHelper.BaseUser;
                 var request = new GatewayRequest { Login = user.Login, Password = user.Password };
 
                 GatewayResponce responce;
@@ -180,7 +180,7 @@ namespace xrail.Util.RailTariff
         {
             try
             {
-                var user = etranDbContext.Users.Find(1);
+                var user = EtranGatewayHelper.BaseUser;
                 var request = new GatewayRequest { Login = user.Login, Password = user.Password };
 
                 GatewayResponce responce;
@@ -291,7 +291,7 @@ namespace xrail.Util.RailTariff
             {
                 using (var etranDbContext = new EtranDbContext())
                 {
-                    var user = etranDbContext.Users.Find(1);
+                    var user = EtranGatewayHelper.BaseUser;
                     var request = new GatewayRequest { Login = user.Login, Password = user.Password };
 
                     GatewayResponce responce;
