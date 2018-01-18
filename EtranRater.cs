@@ -51,7 +51,7 @@ namespace xrail.Util.RailTariff
 
                     request.Text = getCalcDue.GetXml();
 
-                    var @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
+                    var @return = EtranGatewayController.Instance.ExecuteRequest(out responce, out resultMessage, request);
 
                     if (@return)
                     {
@@ -161,7 +161,7 @@ namespace xrail.Util.RailTariff
 
                 request.Text = getCalcDue.GetXml();
 
-                var @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
+                var @return = EtranGatewayController.Instance.ExecuteRequest(out responce, out resultMessage, request);
 
                 if (@return)
                 {
@@ -270,7 +270,7 @@ namespace xrail.Util.RailTariff
 
                 request.Text = getCalcDue.GetXml();
 
-                bool? @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
+                bool? @return = EtranGatewayController.Instance.ExecuteRequest(out responce, out resultMessage, request);
 
                 if (@return != null && @return.Value)
                 {
@@ -299,7 +299,7 @@ namespace xrail.Util.RailTariff
 
                     request.Text = getCalcDistance.GetXml();
 
-                    var @return = EtranGatewayHelper.ExecuteRequest(out responce, out resultMessage, request, user);
+                    var @return = EtranGatewayController.Instance.ExecuteRequest(out responce, out resultMessage, request);
 
                     if (@return)
                     {
