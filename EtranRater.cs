@@ -55,7 +55,7 @@ namespace xrail.Util.RailTariff
 
                     if (@return)
                     {
-                        return ReplyBase.Create<GetCalcDueReply>(responce.Content as string);
+                        return ReplyBase.Create<GetCalcDueReply>(responce.Text);
                     }
                     return null;
                 }
@@ -165,7 +165,7 @@ namespace xrail.Util.RailTariff
 
                 if (@return)
                 {
-                    return ReplyBase.Create<GetCalcDueReply>(responce.Content as string);
+                    return ReplyBase.Create<GetCalcDueReply>(responce.Text);
                 }
                 return null;
             }
@@ -274,7 +274,7 @@ namespace xrail.Util.RailTariff
 
                 if (@return != null && @return.Value)
                 {
-                    return ReplyBase.Create<GetCalcDueReply>(responce.Content as string);
+                    return ReplyBase.Create<GetCalcDueReply>(responce.Text);
                 }
                 return null;
             }
@@ -303,7 +303,7 @@ namespace xrail.Util.RailTariff
 
                     if (@return)
                     {
-                        return ReplyBase.Create<GetCalcDistanceReply>(responce.Content as string);
+                        return ReplyBase.Create<GetCalcDistanceReply>(responce.Text);
                     }
                 }
                 return null;
