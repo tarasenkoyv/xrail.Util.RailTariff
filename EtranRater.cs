@@ -80,7 +80,7 @@ namespace xrail.Util.RailTariff
                 var getCalcDue = new GetCalcDue();
                 getCalcDue.CodeTariff = invoice.CodeTariff;
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
-                getCalcDue.SpeedID = invoice.SpeedID.Value;
+                getCalcDue.SpeedID = invoice.ID > 0 ? invoice.SpeedID.Value : 2 /* Грузовая */;
                 //getCalcDue.FromCountryCode = invoice.FromCountryCode.Value;
                 getCalcDue.FromStationCode = invoice.CodeStationFirstRZD > 0 ? invoice.CodeStationFirstRZD : invoice.CodeFromStation.Value;
                 getCalcDue.ToStationCode = invoice.CodeStationLastRZD > 0 ? invoice.CodeStationLastRZD : invoice.CodeToStation.Value;
@@ -88,8 +88,8 @@ namespace xrail.Util.RailTariff
 
                 getCalcDue.DateLoad = invoice.DateReady;
 
-                getCalcDue.SenderID = invoice.SenderID;
-                getCalcDue.PayerCode = invoice.PayerCode;
+                getCalcDue.SenderID = invoice.ID > 0 ? invoice.SenderID : (long?)null;
+                getCalcDue.PayerCode = invoice.ID > 0 ? invoice.PayerCode : (long?)null;
                 getCalcDue.PayFormID = invoice.PayFormID ?? 0;
                 getCalcDue.PayPlaceID = invoice.PayPlaceID ?? 0;
 
@@ -189,7 +189,7 @@ namespace xrail.Util.RailTariff
                 var getCalcDue = new GetCalcDue();
                 getCalcDue.CodeTariff = invoice.CodeTariff;
                 getCalcDue.SendKindID = invoice.SendKindID.Value;
-                getCalcDue.SpeedID = invoice.SpeedID.Value;
+                getCalcDue.SpeedID = invoice.ID > 0 ? invoice.SpeedID.Value : 2 /* Грузовая */;
                 //getCalcDue.FromCountryCode = invoice.FromCountryCode.Value;
                 getCalcDue.FromStationCode = invoice.CodeStationFirstRZD > 0 ? invoice.CodeStationFirstRZD : invoice.CodeFromStation.Value;
                 getCalcDue.ToStationCode = invoice.CodeStationLastRZD > 0 ? invoice.CodeStationLastRZD : invoice.CodeToStation.Value;
@@ -197,8 +197,8 @@ namespace xrail.Util.RailTariff
 
                 getCalcDue.DateLoad = invoice.DateReady;
 
-                getCalcDue.SenderID = invoice.SenderID;
-                getCalcDue.PayerCode = invoice.PayerCode;
+                getCalcDue.SenderID = invoice.ID > 0 ? invoice.SenderID : (long?)null;
+                getCalcDue.PayerCode = invoice.ID > 0 ? invoice.PayerCode : (long?)null;
                 getCalcDue.PayFormID = invoice.PayFormID ?? 0;
                 getCalcDue.PayPlaceID = invoice.PayPlaceID ?? 0;
 
