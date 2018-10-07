@@ -133,6 +133,27 @@ namespace xrail.Util.RailTariff
                 }
                 getCalcDue.Cars.AddRange(cars);
 
+                // В таблице Invoice.Cars могут быть не все вагоны,
+                // общее кол-во вагонов по накладной в поле Invoice.CountCars
+                if (invoice.ID < 0 && invoice.SendKindID > 2 && getCalcDue.Cars.Count == 1)
+                {
+                    var firstCar = getCalcDue.Cars.First();
+                    var testCar = new InvCarReply()
+                    {
+                        TypeID = (short)firstCar.TypeID,
+                        Number = 11111110,
+                        WeightNet = firstCar.WeightNet,
+                        WeightAddDev = firstCar.WeightAddDev,
+                        AddDevWithGoods = firstCar.AddDevWithGoods,
+                        Tonnage = firstCar.Tonnage,
+                        Axles = (byte)firstCar.Axles,
+                        OwnerTypeID = 1
+                    };
+                    getCalcDue.Cars.Add(testCar);
+
+                    getCalcDue.PlanCarCount = 2;
+                }
+
                 if (!string.IsNullOrEmpty(invoice.RouteTypeName) && getCalcDue.Cars.Count == 1)
                 {
                     var firstCar = getCalcDue.Cars.First();
@@ -242,6 +263,27 @@ namespace xrail.Util.RailTariff
                     cars.Add(car);
                 }
                 getCalcDue.Cars.AddRange(cars);
+
+                // В таблице Invoice.Cars могут быть не все вагоны,
+                // общее кол-во вагонов по накладной в поле Invoice.CountCars
+                if (invoice.ID < 0 && invoice.SendKindID > 2 && getCalcDue.Cars.Count == 1)
+                {
+                    var firstCar = getCalcDue.Cars.First();
+                    var testCar = new InvCarReply()
+                    {
+                        TypeID = (short)firstCar.TypeID,
+                        Number = 11111110,
+                        WeightNet = firstCar.WeightNet,
+                        WeightAddDev = firstCar.WeightAddDev,
+                        AddDevWithGoods = firstCar.AddDevWithGoods,
+                        Tonnage = firstCar.Tonnage,
+                        Axles = (byte)firstCar.Axles,
+                        OwnerTypeID = 3
+                    };
+                    getCalcDue.Cars.Add(testCar);
+
+                    getCalcDue.PlanCarCount = 2;
+                }
 
                 if (!string.IsNullOrEmpty(invoice.RouteTypeName) && getCalcDue.Cars.Count == 1)
                 {
